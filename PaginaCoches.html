@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="es" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIMG DYNAMICS | Multi-Category Racing & Performance Lab</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts: Orbitron & Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Poppins:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            red: '#FF003C',
+                            darkRed: '#990024',
+                            black: '#08080A',
+                            card: '#121216',
+                            gold: '#FFB800',
+                            neon: '#00F0FF',
+                            lime: '#39FF14',
+                            purple: '#A855F7',
+                            carbon: '#141419'
+                        }
+                    },
+                    fontFamily: {
+                        orbitron: ['Orbitron', 'sans-serif'],
+                        poppins: ['Poppins', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #08080A;
+            color: #F3F4F6;
+            overflow-x: hidden;
+        }
+
+        .carbon-pattern {
+            background-color: #0b0b0e;
+            background-image: 
+                radial-gradient(rgba(255, 0, 60, 0.12) 1px, transparent 0),
+                radial-gradient(rgba(255, 255, 255, 0.04) 1px, #08080A 1px);
+            background-size: 24px 24px;
+            background-position: 0 0, 12px 12px;
+        }
+
+        .glass-panel {
+            background: rgba(18, 18, 24, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .glass-nav {
+            background: rgba(8, 8, 10, 0.88);
+            backdrop-filter: blur(14px);
+            border-bottom: 1px solid rgba(255, 0, 60, 0.25);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #08080A;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FF003C;
+            border-radius: 4px;
+        }
+
+        .tilt-card-container {
+            perspective: 1000px;
+        }
+        .tilt-card {
+            transition: transform 0.15s ease-out, box-shadow 0.15s ease-out;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes engineVibrate {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(-3px, 3px) rotate(-0.8deg); }
+            50% { transform: translate(3px, -2px) rotate(0.8deg); }
+            75% { transform: translate(-2px, -3px) rotate(-0.5deg); }
+            100% { transform: translate(2px, 2px) rotate(0.6deg); }
+        }
+
+        .engine-vibrating {
+            animation: engineVibrate 0.04s infinite;
+        }
+
+        @keyframes wheelieUp {
+            0% { transform: rotate(0deg) translateY(0); }
+            50% { transform: rotate(-8deg) translateY(-25px); }
+            100% { transform: rotate(0deg) translateY(0); }
+        }
+
+        .wheelie-anim {
+            animation: wheelieUp 1.2s ease-in-out;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease-out;
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .underglow-effect {
+            filter: drop-shadow(0px 18px 20px var(--glow-color, #00F0FF));
+            transition: filter 0.3s ease;
+        }
+    </style>
+</head>
+<body class="carbon-pattern text-slate-100 antialiased selection:bg-brand-red selection:text-white">
+
+    <!-- Navigation Bar -->
+    <nav class="fixed top-0 left-0 w-full z-50 glass-nav transition-all duration-300 px-4 lg:px-10 py-3.5 flex justify-between items-center">
+        <a href="#" class="flex items-center space-x-3 group">
+            <div class="w-10 h-10 bg-brand-red rounded-xl flex items-center justify-center transform group-hover:rotate-12 transition-transform duration-300 shadow-lg shadow-brand-red/50">
+                <i class="fa-solid fa-gauge-high text-xl text-black"></i>
+            </div>
+            <span class="font-orbitron text-xl sm:text-2xl font-black tracking-widest bg-gradient-to-r from-white via-slate-200 to-brand-red bg-clip-text text-transparent">
+                KIMG<span class="text-brand-red">.GT</span>
+            </span>
+        </a>
+
+        <!-- Desktop Navigation -->
+        <div class="hidden lg:flex items-center space-x-7 font-orbitron text-xs tracking-wider font-semibold">
+            <a href="#hero" class="hover:text-brand-red transition-colors py-1 border-b-2 border-transparent hover:border-brand-red">INICIO</a>
+            <a href="#categories" class="hover:text-brand-red transition-colors py-1 border-b-2 border-transparent hover:border-brand-red">CATEGORÍAS</a>
+            <a href="#showroom" class="hover:text-brand-red transition-colors py-1 border-b-2 border-transparent hover:border-brand-red">GARAGE</a>
+            <a href="#customizer" class="hover:text-brand-red transition-colors py-1 border-b-2 border-transparent hover:border-brand-red">CUSTOM LAB</a>
+            <a href="#soundcheck" class="hover:text-brand-red transition-colors py-1 border-b-2 border-transparent hover:border-brand-red">TELEMETRÍA</a>
+            <a href="#comparator" class="hover:text-brand-red transition-colors py-1 border-b-2 border-transparent hover:border-brand-red">DUELO</a>
+        </div>
+
+        <div class="hidden md:flex items-center space-x-4">
+            <a href="#customizer" class="px-5 py-2.5 bg-brand-red hover:bg-brand-darkRed text-white font-orbitron font-bold rounded-xl text-xs tracking-wider transition-all shadow-lg shadow-brand-red/40 flex items-center gap-2">
+                <i class="fa-solid fa-sliders"></i> CUSTOMIZER
+            </a>
+        </div>
+
+        <button id="mobile-menu-btn" class="lg:hidden text-2xl text-slate-200 focus:outline-none">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+    </nav>
+
+    <!-- Mobile Navigation Drawer -->
+    <div id="mobile-menu" class="fixed inset-0 bg-black/95 z-40 flex flex-col items-center justify-center space-y-8 font-orbitron text-lg opacity-0 pointer-events-none transition-all duration-300 lg:hidden">
+        <a href="#hero" class="mobile-nav-link hover:text-brand-red">INICIO</a>
+        <a href="#categories" class="mobile-nav-link hover:text-brand-red">CATEGORÍAS</a>
+        <a href="#showroom" class="mobile-nav-link hover:text-brand-red">GARAGE</a>
+        <a href="#customizer" class="mobile-nav-link hover:text-brand-red">CUSTOM LAB</a>
+        <a href="#soundcheck" class="mobile-nav-link hover:text-brand-red">TELEMETRÍA & RPM</a>
+        <a href="#comparator" class="mobile-nav-link hover:text-brand-red">COMPARADOR</a>
+        <button id="close-mobile-btn" class="absolute top-6 right-6 text-3xl text-brand-red">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="relative min-h-screen flex items-center justify-center pt-24 overflow-hidden">
+        <canvas id="hero-canvas" class="absolute inset-0 w-full h-full z-0 pointer-events-none"></canvas>
+
+        <div class="absolute -top-40 -left-40 w-96 h-96 bg-brand-red/20 rounded-full blur-[120px] pointer-events-none"></div>
+        <div class="absolute -bottom-40 -right-40 w-96 h-96 bg-brand-neon/20 rounded-full blur-[120px] pointer-events-none"></div>
+
+        <div class="container mx-auto px-6 z-10 text-center relative py-12">
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full glass-panel border border-brand-red/40 text-brand-red text-xs md:text-sm font-orbitron tracking-widest font-semibold mb-6 animate-pulse">
+                <i class="fa-solid fa-flag-checkered"></i> MULTI-DISCIPLINE RACING PLATFORM
+            </div>
+
+            <h1 class="font-orbitron text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-none mb-6">
+                TODAS LAS DISCIPLINAS,<br/>
+                <span id="hero-dynamic-text" class="bg-gradient-to-r from-white via-slate-100 to-brand-red bg-clip-text text-transparent">
+                    UN SOLO GARAJE
+                </span>
+            </h1>
+
+            <p class="max-w-2xl mx-auto text-slate-400 text-sm sm:text-base md:text-lg mb-10 font-light leading-relaxed">
+                Desde superdeportivos híbridos V12 y tramos nocturnos de Rally WRC, hasta monstruos Muscle con compresor V8 y leyendas del Tuning JDM.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#categories" class="w-full sm:w-auto px-8 py-4 bg-brand-red hover:bg-brand-darkRed text-white font-orbitron font-bold rounded-xl tracking-wider transition-all duration-300 shadow-xl shadow-brand-red/30 flex items-center justify-center gap-3">
+                    EXPLORAR CATEGORÍAS <i class="fa-solid fa-layer-group"></i>
+                </a>
+                <a href="#soundcheck" class="w-full sm:w-auto px-8 py-4 glass-panel hover:bg-white/10 text-white border border-white/20 font-orbitron font-bold rounded-xl tracking-wider transition-all duration-300 flex items-center justify-center gap-3">
+                    PROBAR REV LIMITER <i class="fa-solid fa-volume-high text-brand-neon"></i>
+                </a>
+            </div>
+
+            <!-- Discipline Indicator Quick Badges -->
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 max-w-5xl mx-auto mt-16 pt-8 border-t border-white/10 font-orbitron text-xs">
+                <div class="glass-panel p-3 rounded-xl hover:border-brand-red/50 transition-colors">
+                    <i class="fa-solid fa-bolt text-brand-red text-lg mb-1"></i>
+                    <p class="font-bold text-white">SUPERCARS</p>
+                    <p class="text-[10px] text-slate-500">1,000+ HP</p>
+                </div>
+                <div class="glass-panel p-3 rounded-xl hover:border-brand-gold/50 transition-colors">
+                    <i class="fa-solid fa-mountain text-brand-gold text-lg mb-1"></i>
+                    <p class="font-bold text-white">RALLY WRC</p>
+                    <p class="text-[10px] text-slate-500">AWD & Anti-Lag</p>
+                </div>
+                <div class="glass-panel p-3 rounded-xl hover:border-brand-neon/50 transition-colors">
+                    <i class="fa-solid fa-fire text-brand-neon text-lg mb-1"></i>
+                    <p class="font-bold text-white">TUNING / JDM</p>
+                    <p class="text-[10px] text-slate-500">Neon & Widebody</p>
+                </div>
+                <div class="glass-panel p-3 rounded-xl hover:border-brand-lime/50 transition-colors">
+                    <i class="fa-solid fa-gauge text-brand-lime text-lg mb-1"></i>
+                    <p class="font-bold text-white">MUSCLE / DRAG</p>
+                    <p class="text-[10px] text-slate-500">Supercharged V8</p>
+                </div>
+                <div class="glass-panel p-3 rounded-xl hover:border-brand-purple/50 transition-colors col-span-2 sm:col-span-1">
+                    <i class="fa-solid fa-trophy text-brand-purple text-lg mb-1"></i>
+                    <p class="font-bold text-white">CLASSIC LEGENDS</p>
+                    <p class="text-[10px] text-slate-500">Vintage Analogue</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATEGORIES SELECTOR SECTION -->
+    <section id="categories" class="py-20 relative container mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-12 reveal">
+            <h2 class="font-orbitron text-xs tracking-widest text-brand-red uppercase font-bold mb-2">Mundos del Motor</h2>
+            <h3 class="font-orbitron text-3xl sm:text-5xl font-extrabold">ELIGE TU DISCIPLINA</h3>
+            <p class="text-slate-400 text-sm mt-3">Haz clic en una categoría para adaptar la atmósfera del sitio y filtrar el garage de vehículos.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-6 reveal">
+            <!-- Category 1: Supercars -->
+            <div class="category-card glass-panel p-6 rounded-2xl border border-white/10 hover:border-brand-red cursor-pointer transition-all duration-300 hover:-translate-y-2 group" data-category="supercars" data-particle="#FF003C">
+                <div class="w-12 h-12 rounded-xl bg-brand-red/20 text-brand-red flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-rocket"></i>
+                </div>
+                <h4 class="font-orbitron font-bold text-lg text-white mb-2">Supercars</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">Hiperdeportivos exóticos, fibra de carbono y aerodinámica activa.</p>
+            </div>
+
+            <!-- Category 2: Rally -->
+            <div class="category-card glass-panel p-6 rounded-2xl border border-white/10 hover:border-brand-gold cursor-pointer transition-all duration-300 hover:-translate-y-2 group" data-category="rally" data-particle="#FFB800">
+                <div class="w-12 h-12 rounded-xl bg-brand-gold/20 text-brand-gold flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-cloud-sun"></i>
+                </div>
+                <h4 class="font-orbitron font-bold text-lg text-white mb-2">Rally WRC</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">Tracción total AWD, suspensión elevada, barro y anti-lag explosivo.</p>
+            </div>
+
+            <!-- Category 3: Tuning JDM -->
+            <div class="category-card glass-panel p-6 rounded-2xl border border-white/10 hover:border-brand-neon cursor-pointer transition-all duration-300 hover:-translate-y-2 group" data-category="tuning" data-particle="#00F0FF">
+                <div class="w-12 h-12 rounded-xl bg-brand-neon/20 text-brand-neon flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <h4 class="font-orbitron font-bold text-lg text-white mb-2">Tuning & JDM</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">Luces neón underglow, camber extremo, stance y turbos de alta presión.</p>
+            </div>
+
+            <!-- Category 4: Muscle Drag -->
+            <div class="category-card glass-panel p-6 rounded-2xl border border-white/10 hover:border-brand-lime cursor-pointer transition-all duration-300 hover:-translate-y-2 group" data-category="muscle" data-particle="#39FF14">
+                <div class="w-12 h-12 rounded-xl bg-brand-lime/20 text-brand-lime flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-car-burst"></i>
+                </div>
+                <h4 class="font-orbitron font-bold text-lg text-white mb-2">Muscle & Drag</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">Bloques V8 supercharged, caballitos en el semáforo y neumáticos gigantes.</p>
+            </div>
+
+            <!-- Category 5: Classic Legends -->
+            <div class="category-card glass-panel p-6 rounded-2xl border border-white/10 hover:border-brand-purple cursor-pointer transition-all duration-300 hover:-translate-y-2 group" data-category="classic" data-particle="#A855F7">
+                <div class="w-12 h-12 rounded-xl bg-brand-purple/20 text-brand-purple flex items-center justify-center text-2xl mb-4 group-hover:scale-110 transition-transform">
+                    <i class="fa-solid fa-crown"></i>
+                </div>
+                <h4 class="font-orbitron font-bold text-lg text-white mb-2">Clásicos</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">Iconos atemporales de los 70s y 80s con pura esencia mecánica.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- SHOWROOM / MULTI-CATEGORY GARAGE -->
+    <section id="showroom" class="py-20 relative container mx-auto px-6">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 reveal">
+            <div>
+                <h2 class="font-orbitron text-xs tracking-widest text-brand-red uppercase font-bold mb-2">Catálogo Completo</h2>
+                <h3 class="font-orbitron text-3xl sm:text-4xl font-extrabold">GARAGE DE ALTA COMPETICIÓN</h3>
+            </div>
+
+            <!-- Category Filter Pills -->
+            <div class="flex flex-wrap gap-2 mt-6 md:mt-0" id="filter-pills">
+                <button class="filter-pill active px-5 py-2 rounded-xl font-orbitron text-xs font-semibold transition-all bg-brand-red text-white" data-filter="all">TODOS</button>
+                <button class="filter-pill px-5 py-2 rounded-xl font-orbitron text-xs font-semibold glass-panel text-slate-300 hover:text-white" data-filter="supercars">SUPERCAR</button>
+                <button class="filter-pill px-5 py-2 rounded-xl font-orbitron text-xs font-semibold glass-panel text-slate-300 hover:text-white" data-filter="rally">RALLY</button>
+                <button class="filter-pill px-5 py-2 rounded-xl font-orbitron text-xs font-semibold glass-panel text-slate-300 hover:text-white" data-filter="tuning">TUNING</button>
+                <button class="filter-pill px-5 py-2 rounded-xl font-orbitron text-xs font-semibold glass-panel text-slate-300 hover:text-white" data-filter="muscle">MUSCLE</button>
+                <button class="filter-pill px-5 py-2 rounded-xl font-orbitron text-xs font-semibold glass-panel text-slate-300 hover:text-white" data-filter="classic">CLÁSICO</button>
+            </div>
+        </div>
+
+        <!-- Supercars Grid Container -->
+        <div id="cars-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 tilt-card-container">
+            <!-- Dynamic JavaScript Generation -->
+        </div>
+    </section>
+
+    <!-- MULTI-CATEGORY CUSTOMIZER LAB -->
+    <section id="customizer" class="py-24 bg-brand-carbon relative overflow-hidden border-y border-white/5">
+        <div class="container mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                <!-- Configurator Controls Side -->
+                <div class="lg:col-span-5 reveal">
+                    <span class="px-3 py-1 bg-brand-neon/10 text-brand-neon text-xs font-orbitron rounded-md font-bold tracking-widest border border-brand-neon/20">ADVANCED STYLING</span>
+                    <h2 class="font-orbitron text-3xl md:text-5xl font-black mt-4 mb-6">CUSTOM LAB 360°</h2>
+                    
+                    <!-- Dynamic Controls Header -->
+                    <div class="flex space-x-2 mb-6 border-b border-white/10 pb-4">
+                        <button class="custom-tab-btn active font-orbitron text-xs px-3 py-1.5 rounded-lg bg-white/10 text-white font-bold" data-mode="tuning">TUNING & NEÓN</button>
+                        <button class="custom-tab-btn font-orbitron text-xs px-3 py-1.5 rounded-lg glass-panel text-slate-400" data-mode="rally">MODO RALLY</button>
+                        <button class="custom-tab-btn font-orbitron text-xs px-3 py-1.5 rounded-lg glass-panel text-slate-400" data-mode="drag">MUSCLE V8</button>
+                    </div>
+
+                    <!-- TUNING CONTROLS PANEL -->
+                    <div id="panel-tuning" class="space-y-6">
+                        <div>
+                            <label class="block font-orbitron text-xs text-slate-300 uppercase tracking-wider mb-2">Luz Neón Underglow (Suelo)</label>
+                            <div class="flex gap-3">
+                                <button class="neon-color-btn w-9 h-9 rounded-full bg-cyan-400 ring-2 ring-white" data-neon="#00F0FF"></button>
+                                <button class="neon-color-btn w-9 h-9 rounded-full bg-red-600" data-neon="#FF003C"></button>
+                                <button class="neon-color-btn w-9 h-9 rounded-full bg-lime-400" data-neon="#39FF14"></button>
+                                <button class="neon-color-btn w-9 h-9 rounded-full bg-purple-600" data-neon="#A855F7"></button>
+                                <button class="neon-color-btn w-9 h-9 rounded-full bg-yellow-400" data-neon="#FFB800"></button>
+                                <button class="neon-color-btn w-9 h-9 rounded-full bg-zinc-800 border border-white/20 text-xs flex items-center justify-center text-slate-400" data-neon="transparent">OFF</button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between font-orbitron text-xs mb-1">
+                                <span>Caída de Ruedas (Camber Angle)</span>
+                                <span id="camber-val" class="text-brand-neon">-2°</span>
+                            </div>
+                            <input type="range" id="camber-slider" min="0" max="15" value="2" class="w-full accent-brand-neon bg-zinc-800">
+                        </div>
+
+                        <div>
+                            <div class="flex justify-between font-orbitron text-xs mb-1">
+                                <span>Suspensión Neumática (Stance Height)</span>
+                                <span id="stance-val" class="text-brand-red">Normal</span>
+                            </div>
+                            <input type="range" id="stance-slider" min="0" max="25" value="10" class="w-full accent-brand-red bg-zinc-800">
+                        </div>
+
+                        <div class="flex items-center justify-between glass-panel p-3 rounded-xl">
+                            <span class="font-orbitron text-xs font-bold">Llamas en Escape (Backfire)</span>
+                            <input type="checkbox" id="exhaust-flame-check" class="w-5 h-5 accent-brand-red">
+                        </div>
+                    </div>
+
+                    <!-- RALLY CONTROLS PANEL -->
+                    <div id="panel-rally" class="space-y-6 hidden">
+                        <div>
+                            <label class="block font-orbitron text-xs text-slate-300 uppercase tracking-wider mb-2">Terreno de Tramo</label>
+                            <div class="grid grid-cols-3 gap-3">
+                                <button class="terrain-btn active px-3 py-2 text-xs font-orbitron bg-brand-gold text-black font-bold rounded-lg" data-bg="gravel">GRAVA</button>
+                                <button class="terrain-btn px-3 py-2 text-xs font-orbitron glass-panel text-slate-300 rounded-lg" data-bg="snow">NIEVE</button>
+                                <button class="terrain-btn px-3 py-2 text-xs font-orbitron glass-panel text-slate-300 rounded-lg" data-bg="asphalt">ASFALTO</button>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between glass-panel p-3 rounded-xl">
+                            <span class="font-orbitron text-xs font-bold">Parrilla de Faros Nocturnos LED</span>
+                            <input type="checkbox" id="rally-lights-check" checked class="w-5 h-5 accent-brand-gold">
+                        </div>
+                    </div>
+
+                    <!-- DRAG CONTROLS PANEL -->
+                    <div id="panel-drag" class="space-y-6 hidden">
+                        <div class="glass-panel p-4 rounded-xl border border-brand-lime/30">
+                            <p class="font-orbitron text-xs font-bold text-brand-lime">COMPRESOR VOLUMÉTRICO V8</p>
+                            <p class="text-xs text-slate-400 mt-1">Sobrealimentador sobresaliendo del capó para máxima admisión de aire.</p>
+                            <button id="trigger-wheelie" class="mt-4 w-full py-2.5 bg-brand-lime text-black font-orbitron font-bold text-xs rounded-lg hover:bg-lime-400 transition-colors">
+                                <i class="fa-solid fa-bolt"></i> HACER LC (LAUNCH CONTROL)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Custom Vector Visualizer: SEAT LEÓN MK2 CUPRA -->
+                <div class="lg:col-span-7 relative flex flex-col items-center justify-center reveal">
+                    <div id="car-stage" class="relative w-full aspect-video rounded-3xl overflow-hidden glass-panel border border-white/10 flex items-center justify-center p-4 sm:p-8 shadow-2xl transition-all">
+                        
+                        <!-- Environment Terrain Background Glow -->
+                        <div id="terrain-glow" class="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-brand-neon/10 pointer-events-none"></div>
+
+                        <!-- SVG Vector Representation of SEAT León Mk2 Cupra -->
+                        <svg id="custom-car-svg" viewBox="0 0 900 480" class="w-full h-auto drop-shadow-2xl transition-all duration-300">
+                            <defs>
+                                <linearGradient id="glassGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#1E293B" stop-opacity="0.9" />
+                                    <stop offset="100%" stop-color="#0F172A" stop-opacity="0.95" />
+                                </linearGradient>
+                                <linearGradient id="cupraBumperGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                                    <stop offset="0%" stop-color="#1A1A20" />
+                                    <stop offset="100%" stop-color="#08080A" />
+                                </linearGradient>
+                                <filter id="glow">
+                                    <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+                                    <feMerge>
+                                        <feMergeNode in="coloredBlur"/>
+                                        <feMergeNode in="SourceGraphic"/>
+                                    </feMerge>
+                                </filter>
+                            </defs>
+
+                            <!-- Floor Shadow -->
+                            <ellipse cx="450" cy="390" rx="410" ry="22" fill="#000" opacity="0.88" />
+                            
+                            <!-- Underglow Neon Glow Path -->
+                            <ellipse id="underglow-path" cx="450" cy="380" rx="330" ry="14" fill="#00F0FF" opacity="0.85" class="underglow-effect" />
+
+                            <!-- Main Vehicle Group with Stance Height Translation -->
+                            <g id="car-stance-group" transform="translate(0, 0)">
+                                
+                                <!-- Back Wheel Well Shadows -->
+                                <circle cx="270" cy="340" r="58" fill="#050507" />
+                                <circle cx="680" cy="340" r="56" fill="#050507" />
+
+                                <!-- SEAT León Mk2 Cupra Body Shell Silhouette -->
+                                <!-- Distinctive rounded egg-hatchback line, swept windshield, and sharp Cupra creases -->
+                                <path id="custom-body" d="
+                                    M 110,335 
+                                    C 110,300 125,275 160,250 
+                                    C 210,215 285,160 380,140 
+                                    C 470,120 570,125 670,180 
+                                    C 730,210 790,250 825,285 
+                                    C 845,305 850,330 835,345 
+                                    C 810,360 760,360 720,360 
+                                    L 230,360 
+                                    C 180,360 110,355 110,335 Z
+                                " fill="#FF003C" stroke="#000" stroke-width="2" />
+
+                                <!-- Cupra Characteristic Rear Roof Spoiler -->
+                                <path d="M 125,255 C 105,245 90,230 80,225 C 100,230 135,240 155,248 Z" fill="#111116" />
+
+                                <!-- Mk2 Cupra Black Side Mirrors -->
+                                <path d="M 580,205 C 570,190 550,190 545,202 C 555,212 575,212 580,205 Z" fill="#121216" stroke="#222" stroke-width="1.5" />
+
+                                <!-- SEAT León Mk2 Curved Side Windows & B-Pillar -->
+                                <path d="M 310,220 C 375,165 470,142 560,152 C 640,185 665,215 665,220 C 580,220 440,220 310,220 Z" fill="url(#glassGrad)" stroke="#222" stroke-width="2" />
+                                <line x1="490" y1="148" x2="490" y2="220" stroke="#08080A" stroke-width="8" />
+
+                                <!-- Mk2 Characteristic Door Handle Accent Lines & Side Moldings -->
+                                <path d="M 220,290 C 350,285 550,280 780,295" stroke="rgba(0,0,0,0.25)" stroke-width="3" fill="none" />
+                                <path d="M 180,330 L 780,330" stroke="#121216" stroke-width="4" fill="none" />
+
+                                <!-- Aggressive Front Bumper - Cupra Specific Air Intakes -->
+                                <path d="M 720,300 C 760,305 815,310 835,340 C 810,358 750,358 720,358 Z" fill="url(#cupraBumperGrad)" stroke="#222" stroke-width="1.5" />
+                                
+                                <!-- Cupra Center Grille & SEAT Logo Emblem Area -->
+                                <ellipse cx="800" cy="318" rx="18" ry="12" fill="#0D0D11" stroke="#333" stroke-width="1.5" />
+                                <!-- SEAT 'S' Metallic Logo Symbol -->
+                                <path d="M 795,314 L 805,314 L 795,322 L 805,322" stroke="#FF003C" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+
+                                <!-- Cupra Front Headlights with Aggressive Eyebrow -->
+                                <path d="M 720,270 C 750,270 785,285 805,295 C 770,300 735,295 710,285 Z" fill="#E2E8F0" opacity="0.95" filter="url(#glow)" />
+                                <path d="M 720,270 C 750,270 785,285 805,295" stroke="#121216" stroke-width="3" fill="none" />
+
+                                <!-- Cupra Rear Taillights (SEAT León Mk2 Signature Curves) -->
+                                <path d="M 140,265 C 165,268 185,278 190,290 C 160,290 135,282 130,275 Z" fill="#FF003C" filter="url(#glow)" />
+
+                                <!-- Rally Light Pods (Togglable for Cupra Supercopa Spec) -->
+                                <g id="rally-pod-group" class="opacity-0 transition-opacity duration-300">
+                                    <circle cx="810" cy="310" r="14" fill="#FFB800" stroke="#000" stroke-width="2" />
+                                    <circle cx="785" cy="305" r="14" fill="#FFB800" stroke="#000" stroke-width="2" />
+                                    <circle cx="810" cy="310" r="9" fill="#FFF" />
+                                    <circle cx="785" cy="305" r="9" fill="#FFF" />
+                                </g>
+
+                                <!-- Exhaust Flame Backfire Animation (Togglable) -->
+                                <g id="exhaust-flame" class="opacity-0 transition-opacity duration-200">
+                                    <path d="M 105,350 Q 65,345 45,355 Q 65,360 105,355 Z" fill="#FFB800" class="animate-ping" />
+                                    <path d="M 105,352 Q 75,348 60,355 Q 75,358 105,355 Z" fill="#FF003C" />
+                                </g>
+
+                                <!-- Stage 3 High Flow Hood Intake Option -->
+                                <g id="supercharger-block" class="opacity-0 transition-opacity duration-300">
+                                    <rect x="650" y="210" width="45" height="20" fill="#1A1A20" rx="4" stroke="#FF003C" stroke-width="1.5" />
+                                    <circle cx="672" cy="220" r="6" fill="#00F0FF" />
+                                </g>
+
+                                <!-- Cupra Sport Alloy Wheels Group (With Camber Angle Transform) -->
+                                <!-- Rear Wheel -->
+                                <g id="wheel-rear-group" transform="rotate(2, 270, 340)">
+                                    <circle cx="270" cy="340" r="48" fill="#08080A" stroke="#1A1A20" stroke-width="8"/>
+                                    <!-- Cupra Multi-Spoke Rim Design -->
+                                    <circle cx="270" cy="340" r="32" fill="#18181C" stroke="#E2E8F0" stroke-width="3"/>
+                                    <line x1="270" y1="308" x2="270" y2="372" stroke="#E2E8F0" stroke-width="3"/>
+                                    <line x1="238" y1="340" x2="302" y2="340" stroke="#E2E8F0" stroke-width="3"/>
+                                    <line x1="247" y1="317" x2="293" y2="363" stroke="#E2E8F0" stroke-width="2"/>
+                                    <line x1="247" y1="363" x2="293" y2="317" stroke="#E2E8F0" stroke-width="2"/>
+                                    <!-- Red Cupra Brake Caliper -->
+                                    <rect x="250" y="325" width="12" height="18" fill="#FF003C" rx="2" />
+                                    <circle cx="270" cy="340" r="8" fill="#000" />
+                                </g>
+
+                                <!-- Front Wheel -->
+                                <g id="wheel-front-group" transform="rotate(2, 680, 340)">
+                                    <circle cx="680" cy="340" r="46" fill="#08080A" stroke="#1A1A20" stroke-width="8"/>
+                                    <!-- Cupra Multi-Spoke Rim Design -->
+                                    <circle cx="680" cy="340" r="30" fill="#18181C" stroke="#E2E8F0" stroke-width="3"/>
+                                    <line x1="680" y1="310" x2="680" y2="370" stroke="#E2E8F0" stroke-width="3"/>
+                                    <line x1="650" y1="340" x2="710" y2="340" stroke="#E2E8F0" stroke-width="3"/>
+                                    <line x1="659" y1="319" x2="701" y2="361" stroke="#E2E8F0" stroke-width="2"/>
+                                    <line x1="659" y1="361" x2="701" y2="319" stroke="#E2E8F0" stroke-width="2"/>
+                                    <!-- Red Cupra Brake Caliper -->
+                                    <rect x="660" y="325" width="12" height="18" fill="#FF003C" rx="2" />
+                                    <circle cx="680" cy="340" r="8" fill="#000" />
+                                </g>
+
+                            </g>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>  
+
+    <!-- SOUND & ENGINE TELEMETRY SIMULATOR -->
+    <section id="soundcheck" class="py-24 relative container mx-auto px-6">
+        <div class="text-center max-w-3xl mx-auto mb-12 reveal">
+            <h2 class="font-orbitron text-xs tracking-widest text-brand-neon uppercase font-bold mb-2">Telemetría Sónica</h2>
+            <h3 class="font-orbitron text-3xl sm:text-5xl font-extrabold">TACÓMETRO & REV LIMITER</h3>
+            <p class="text-slate-400 text-sm mt-3">Selecciona el tipo de motor, activa el Nitro o mantén presionado el acelerador para escuchar el rugido sintético.</p>
+        </div>
+
+        <div class="max-w-4xl mx-auto glass-panel p-8 md:p-12 rounded-3xl border border-white/10 shadow-2xl relative overflow-hidden reveal" id="engine-bay">
+            <canvas id="sparks-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-20"></canvas>
+
+            <!-- Sound Type Selector Pills -->
+            <div class="flex flex-wrap justify-center gap-3 mb-8 font-orbitron text-xs">
+                <button class="engine-type-btn active px-4 py-2 rounded-lg bg-brand-red text-white" data-type="v12">V12 HYPERCAR</button>
+                <button class="engine-type-btn px-4 py-2 rounded-lg glass-panel text-slate-300" data-type="v8">V8 MUSCLE</button>
+                <button class="engine-type-btn px-4 py-2 rounded-lg glass-panel text-slate-300" data-type="rotary">2JZ / TURBO JDM</button>
+                <button class="engine-type-btn px-4 py-2 rounded-lg glass-panel text-slate-300" data-type="rally">WRC ANTI-LAG</button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <!-- Gauge Circle display -->
+                <div class="flex flex-col items-center justify-center relative">
+                    <div class="relative w-64 h-64 flex items-center justify-center">
+                        <svg class="w-full h-full -rotate-90 transform" viewBox="0 0 200 200">
+                            <circle cx="100" cy="100" r="80" fill="none" stroke="#1E293B" stroke-width="12" stroke-dasharray="377" stroke-dashoffset="94" stroke-linecap="round"/>
+                            <circle id="rpm-circle" cx="100" cy="100" r="80" fill="none" stroke="#FF003C" stroke-width="12" stroke-dasharray="377" stroke-dashoffset="377" stroke-linecap="round" class="transition-all duration-75"/>
+                        </svg>
+
+                        <div class="absolute inset-0 flex flex-col items-center justify-center text-center">
+                            <span id="rpm-text" class="font-orbitron text-4xl font-black text-white tracking-wider">800</span>
+                            <span class="font-orbitron text-xs text-brand-red font-bold">RPM</span>
+                            <!-- Shift Light Array -->
+                            <div class="flex space-x-1.5 mt-2" id="shift-lights">
+                                <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+                                <div class="w-2.5 h-2.5 rounded-full bg-zinc-700"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="w-full grid grid-cols-2 gap-4 mt-6 text-center">
+                        <div class="glass-panel p-3 rounded-xl">
+                            <p class="text-[10px] text-slate-400 font-orbitron">TURBO BOOST</p>
+                            <p id="turbo-val" class="font-orbitron text-lg font-bold text-brand-neon">0.0 BAR</p>
+                        </div>
+                        <div class="glass-panel p-3 rounded-xl">
+                            <p class="text-[10px] text-slate-400 font-orbitron">VELOCIDAD</p>
+                            <p id="speed-val" class="font-orbitron text-lg font-bold text-brand-red">0 KM/H</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accelerator & Nitro Controls -->
+                <div class="flex flex-col items-center justify-center space-y-6">
+                    <button id="pedal-btn" class="relative group w-48 h-56 bg-gradient-to-b from-zinc-800 to-zinc-950 rounded-2xl border-2 border-zinc-700 shadow-2xl flex flex-col items-center justify-between p-5 select-none touch-none hover:border-brand-red transition-all cursor-pointer">
+                        <div class="w-full space-y-2 opacity-50">
+                            <div class="h-1.5 bg-zinc-600 rounded-full"></div>
+                            <div class="h-1.5 bg-zinc-600 rounded-full"></div>
+                            <div class="h-1.5 bg-zinc-600 rounded-full"></div>
+                            <div class="h-1.5 bg-zinc-600 rounded-full"></div>
+                        </div>
+
+                        <div class="text-center">
+                            <i class="fa-solid fa-gauge-high text-3xl text-zinc-500 group-hover:text-brand-red transition-colors"></i>
+                            <span class="block font-orbitron text-xs font-bold mt-2 text-zinc-300">GAS / ACELERAR</span>
+                        </div>
+
+                        <div id="pedal-status" class="w-3 h-3 rounded-full bg-zinc-600"></div>
+                    </button>
+
+                    <!-- Nitro Boost Trigger Button -->
+                    <button id="nos-btn" class="px-6 py-3 bg-brand-neon/20 border border-brand-neon text-brand-neon hover:bg-brand-neon hover:text-black font-orbitron font-bold text-xs rounded-xl transition-all shadow-lg shadow-brand-neon/20 flex items-center gap-2">
+                        <i class="fa-solid fa-fire-flame-curved"></i> INYECTAR NOS (NITRO)
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPARATOR SECTION -->
+    <section id="comparator" class="py-24 bg-brand-carbon relative border-t border-white/5">
+        <div class="container mx-auto px-6">
+            <div class="text-center max-w-3xl mx-auto mb-16 reveal">
+                <h2 class="font-orbitron text-xs tracking-widest text-brand-red uppercase font-bold mb-2">Duelo de Especificaciones</h2>
+                <h3 class="font-orbitron text-3xl sm:text-5xl font-extrabold">COMPARADOR MULTICATEGORÍA</h3>
+                <p class="text-slate-400 text-sm mt-3">Enfrenta cara a cara a coches de distintas disciplinas y analiza su rendimiento relativo.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 reveal">
+                <div class="glass-panel p-6 rounded-2xl border border-white/10 space-y-6">
+                    <div class="flex items-center justify-between">
+                        <span class="font-orbitron text-xs text-brand-red font-bold">CONTENDOR A</span>
+                        <select id="select-car-1" class="bg-black/80 border border-white/20 text-white font-orbitron text-xs rounded-lg px-3 py-2 focus:border-brand-red focus:outline-none">
+                        </select>
+                    </div>
+                    <div id="car-1-card"></div>
+                </div>
+
+                <div class="glass-panel p-6 rounded-2xl border border-white/10 space-y-6">
+                    <div class="flex items-center justify-between">
+                        <span class="font-orbitron text-xs text-brand-neon font-bold">CONTENDOR B</span>
+                        <select id="select-car-2" class="bg-black/80 border border-white/20 text-white font-orbitron text-xs rounded-lg px-3 py-2 focus:border-brand-neon focus:outline-none">
+                        </select>
+                    </div>
+                    <div id="car-2-card"></div>
+                </div>
+            </div>
+
+            <div class="mt-12 glass-panel p-8 rounded-2xl border border-white/10 max-w-4xl mx-auto reveal">
+                <h4 class="font-orbitron text-xs font-bold text-center mb-6 text-slate-300 tracking-wider">ACELERACIÓN 0-100 KM/H</h4>
+                
+                <div class="space-y-6">
+                    <div>
+                        <div class="flex justify-between font-orbitron text-xs mb-2">
+                            <span id="comp-name-1" class="text-brand-red">Coche 1</span>
+                            <span id="comp-val-1" class="font-bold">2.5s</span>
+                        </div>
+                        <div class="w-full bg-zinc-800 rounded-full h-3 overflow-hidden">
+                            <div id="bar-1" class="bg-brand-red h-full rounded-full transition-all duration-700" style="width: 70%"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between font-orbitron text-xs mb-2">
+                            <span id="comp-name-2" class="text-brand-neon">Coche 2</span>
+                            <span id="comp-val-2" class="font-bold">2.3s</span>
+                        </div>
+                        <div class="w-full bg-zinc-800 rounded-full h-3 overflow-hidden">
+                            <div id="bar-2" class="bg-brand-neon h-full rounded-full transition-all duration-700" style="width: 80%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MODAL SPECIFICATIONS -->
+    <div id="car-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+        <div class="glass-panel max-w-2xl w-full rounded-3xl border border-white/20 p-6 md:p-8 relative transform scale-95 transition-transform duration-300 shadow-2xl max-h-[90vh] overflow-y-auto">
+            <button id="close-modal" class="absolute top-6 right-6 text-2xl text-slate-400 hover:text-brand-red transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modal-content"></div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-black py-12 border-t border-white/10 font-orbitron text-xs text-slate-500">
+        <div class="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="flex items-center space-x-3">
+                <span class="text-xl font-black text-white">KIMG<span class="text-brand-red">.GT</span></span>
+                <span class="text-slate-600">|</span>
+                <span>MULTI-DISCIPLINE EDITION © 2026</span>
+            </div>
+            <p class="text-slate-600 font-sans text-xs">Página interactiva de alto rendimiento visual.</p>
+        </div>
+    </footer>
+
+    <script>
+        /* =========================================================
+           MULTICATEGORY CAR DATASET
+           ========================================================= */
+        const supercars = [
+            // Supercars / Hypercars
+            {
+                id: 'revuelto',
+                name: 'Lamborghini Revuelto',
+                category: 'supercars',
+                type: 'Híbrido V12',
+                power: '1,015 HP',
+                hpNum: 1015,
+                accel: '2.5s',
+                accelNum: 2.5,
+                topSpeed: '350 km/h',
+                engine: '6.5L V12 + 3 Eléctricos',
+                image: 'https://images.unsplash.com/photo-1544829099-b9a0c07fad1a?auto=format&fit=crop&w=800&q=80',
+                description: 'Hiperdeportivos exóticos con arquitectura V12 atmosférica conectada a un tren motriz híbrido de 3 motores eléctricos.',
+                price: '$604,000'
+            },
+            {
+                id: 'sf90',
+                name: 'Ferrari SF90 XX Stradale',
+                category: 'supercars',
+                type: 'Híbrido V8 Twin-Turbo',
+                power: '1,030 HP',
+                hpNum: 1030,
+                accel: '2.3s',
+                accelNum: 2.3,
+                topSpeed: '320 km/h',
+                engine: '4.0L V8 Twin-Turbo + 3 Eléctricos',
+                image: 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?auto=format&fit=crop&w=800&q=80',
+                description: 'La máxima expresión homologada para calle de Maranello con alerón trasero fijo y rendimiento de F1.',
+                price: '$890,000'
+            },
+            // Rally & WRC
+            {
+                id: 'yariswrc',
+                name: 'Toyota GR Yaris Rally1 WRC',
+                category: 'rally',
+                type: 'WRC Hybrid AWD',
+                power: '530 HP',
+                hpNum: 530,
+                accel: '2.9s',
+                accelNum: 2.9,
+                topSpeed: '201 km/h',
+                engine: '1.6L Turbo 4-Cil + KERS',
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbgDkyFcaNB2mNMA3EVNBk_BywyBCMlmx3He8WQiYZ0g&s=10',
+                description: 'Bestia de los tramos mundiales de Rally con sistema anti-lag activo, tracción total simétrica y refuerzo híbrido.',
+                price: '$450,000 (WRC Specs)'
+            },
+            {
+                id: 'subarusti',
+                name: 'Subaru Impreza WRX STI Rally 22B',
+                category: 'rally',
+                type: 'Legendario Rally AWD',
+                power: '350 HP',
+                hpNum: 350,
+                accel: '4.2s',
+                accelNum: 4.2,
+                topSpeed: '248 km/h',
+                engine: '2.2L Boxer Turbo',
+                image: 'https://i.redd.it/offk4qpynf9h1.png',
+                description: 'Mitico del campeonato mundial WRC decorado en azul Sonic Blue con llantas doradas BBS y tracción Symmetrical AWD.',
+                price: '$135,000'
+            },
+            // Tuning & JDM
+            {
+                id: 'supra2jz',
+                name: 'Toyota Supra MK4 2JZ-GTE Custom',
+                category: 'tuning',
+                type: 'JDM Legend / Drift',
+                power: '950 HP',
+                hpNum: 950,
+                accel: '2.8s',
+                accelNum: 2.8,
+                topSpeed: '330 km/h',
+                engine: '3.0L 2JZ-GTE Single Turbo Big Boost',
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTPlkbVJnkt6GgbbUwiJcyacc1poqJCOl96fWDMgL1gGw&s=10',
+                description: 'Preparación radical JDM con kit de carrocería ancha, intercooler frontal expuesto, neumáticos de drift y suspension stance.',
+                price: '$120,000'
+            },
+            {
+                id: 'r34gtr',
+                name: 'Nissan Skyline GT-R R34 Nismo',
+                category: 'tuning',
+                type: 'JDM AWD Twin-Turbo',
+                power: '800 HP',
+                hpNum: 800,
+                accel: '3.1s',
+                accelNum: 3.1,
+                topSpeed: '315 km/h',
+                engine: '2.6L RB26DETT Twin-Turbo',
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRqvxpLdV0fPaVR3i37_FO3UnTxkBTumVbnaiIodE6zCQ&s=10',
+                description: 'Godzilla con sistema ATTESA E-TS PRO, telemetría digital en consola central y mapa de inyección custom.',
+                price: '$210,000'
+            },
+            // Muscle & Drag
+            {
+                id: 'demon170',
+                name: 'Dodge Challenger SRT Demon 170',
+                category: 'muscle',
+                type: 'Drag Race Muscle V8',
+                power: '1,025 HP',
+                hpNum: 1025,
+                accel: '1.66s',
+                accelNum: 1.66,
+                topSpeed: '346 km/h',
+                engine: '6.2L V8 Supercharged Hemi',
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTGKw7-MwCdGZ-FYPYnhrlY3oKcft42THGd55iVtD8NBQ&s=10',
+                description: 'Aceleración brutal de 0 a 100 en 1.66 segundos impulsado por un gigantesco compresor volumétrico.',
+                price: '$100,000'
+            },
+            // Classic Legends
+            {
+                id: 'countach',
+                name: 'Lamborghini Countach LP400S',
+                category: 'classic',
+                type: 'Clásico Vintage V12',
+                power: '375 HP',
+                hpNum: 375,
+                accel: '5.2s',
+                accelNum: 5.2,
+                topSpeed: '292 km/h',
+                engine: '3.9L V12 Atmosférico',
+                image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHckpCZRYxckQNd_Xm0iA0Qku3vl6uE6om5bj0MyzI7g&s=10',
+                description: 'El diseño cuña definitivo que definió la cultura de los carteles de los años 80 con puertas de tijera.',
+                price: '$550,000'
+            }
+        ];
+
+        /* =========================================================
+           1. HERO PARTICLES (COLOR ADAPTIVE)
+           ========================================================= */
+        let currentParticleColor = '#FF003C';
+        const initHeroCanvas = () => {
+            const canvas = document.getElementById('hero-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            let width = (canvas.width = window.innerWidth);
+            let height = (canvas.height = window.innerHeight);
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const particles = Array.from({ length: 70 }, () => ({
+                x: Math.random() * width,
+                y: Math.random() * height,
+                vx: (Math.random() - 0.5) * 1.5,
+                vy: -Math.random() * 2 - 0.5,
+                size: Math.random() * 2.5 + 1,
+                alpha: Math.random() * 0.7 + 0.2
+            }));
+
+            const animateParticles = () => {
+                ctx.clearRect(0, 0, width, height);
+
+                particles.forEach((p) => {
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.y < 0) p.y = height;
+                    if (p.x < 0 || p.x > width) p.x = Math.random() * width;
+
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    ctx.fillStyle = currentParticleColor;
+                    ctx.globalAlpha = p.alpha;
+                    ctx.shadowBlur = 8;
+                    ctx.shadowColor = currentParticleColor;
+                    ctx.fill();
+                });
+
+                requestAnimationFrame(animateParticles);
+            };
+
+            animateParticles();
+        };
+
+        /* =========================================================
+           2. RENDER GARAGE & TILT CARDS
+           ========================================================= */
+        const renderShowroom = (filter = 'all') => {
+            const grid = document.getElementById('cars-grid');
+            grid.innerHTML = '';
+
+            const filtered = filter === 'all' 
+                ? supercars 
+                : supercars.filter(c => c.category === filter);
+
+            filtered.forEach(car => {
+                const card = document.createElement('div');
+                card.className = 'tilt-card glass-panel rounded-2xl overflow-hidden border border-white/10 group cursor-pointer hover:border-brand-red/50';
+                card.innerHTML = `
+                    <div class="relative h-52 overflow-hidden">
+                        <img src="${car.image}" alt="${car.name}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=800&q=80'">
+                        <div class="absolute inset-0 bg-gradient-to-t from-brand-card via-transparent to-transparent"></div>
+                        <span class="absolute top-4 right-4 bg-black/80 backdrop-blur-md text-brand-red font-orbitron text-[10px] font-bold px-3 py-1 rounded-full border border-brand-red/30 uppercase">
+                            ${car.type}
+                        </span>
+                    </div>
+
+                    <div class="p-6">
+                        <h4 class="font-orbitron text-lg font-bold mb-2 group-hover:text-brand-red transition-colors">${car.name}</h4>
+                        <p class="text-xs text-slate-400 font-light line-clamp-2 mb-6">${car.description}</p>
+
+                        <div class="grid grid-cols-3 gap-2 py-3 border-y border-white/10 text-center font-orbitron mb-6">
+                            <div>
+                                <p class="text-[9px] text-slate-500">POTENCIA</p>
+                                <p class="text-xs font-bold text-white">${car.power}</p>
+                            </div>
+                            <div>
+                                <p class="text-[9px] text-slate-500">0-100</p>
+                                <p class="text-xs font-bold text-brand-neon">${car.accel}</p>
+                            </div>
+                            <div>
+                                <p class="text-[9px] text-slate-500">MÁXIMA</p>
+                                <p class="text-xs font-bold text-brand-red">${car.topSpeed}</p>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between">
+                            <span class="font-orbitron font-bold text-base text-white">${car.price}</span>
+                            <button class="modal-trigger px-4 py-2 bg-brand-red/10 hover:bg-brand-red text-brand-red hover:text-white font-orbitron text-xs font-bold rounded-lg transition-all border border-brand-red/30" data-id="${car.id}">
+                                TELEMETRÍA
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    card.style.transform = `rotateY(${x / 20}deg) rotateX(${-y / 20}deg) translateY(-6px)`;
+                });
+
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = 'rotateY(0deg) rotateX(0deg) translateY(0px)';
+                });
+
+                grid.appendChild(card);
+            });
+
+            document.querySelectorAll('.modal-trigger').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    openModal(btn.dataset.id);
+                });
+            });
+        };
+
+        /* =========================================================
+           3. ADVANCED MULTI-CATEGORY CUSTOMIZER CONTROLS
+           ========================================================= */
+        const initCustomizer = () => {
+            const underglow = document.getElementById('underglow-path');
+            const camberVal = document.getElementById('camber-val');
+            const camberSlider = document.getElementById('camber-slider');
+            const stanceVal = document.getElementById('stance-val');
+            const stanceSlider = document.getElementById('stance-slider');
+            const stanceGroup = document.getElementById('car-stance-group');
+            const wheelRear = document.getElementById('wheel-rear-group');
+            const wheelFront = document.getElementById('wheel-front-group');
+            const exhaustFlame = document.getElementById('exhaust-flame');
+            const exhaustCheck = document.getElementById('exhaust-flame-check');
+            const rallyPod = document.getElementById('rally-pod-group');
+            const rallyCheck = document.getElementById('rally-lights-check');
+            const supercharger = document.getElementById('supercharger-block');
+            const stage = document.getElementById('car-stage');
+
+            // Underglow Color
+            document.querySelectorAll('.neon-color-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.neon-color-btn').forEach(b => b.classList.remove('ring-2', 'ring-white'));
+                    btn.classList.add('ring-2', 'ring-white');
+                    const color = btn.dataset.neon;
+                    underglow.setAttribute('fill', color);
+                    underglow.style.setProperty('--glow-color', color);
+                });
+            });
+
+            // Camber Slider
+            camberSlider.addEventListener('input', (e) => {
+                const angle = e.target.value;
+                camberVal.innerText = `-${angle}°`;
+                wheelRear.setAttribute('transform', `rotate(${angle}, 250, 320)`);
+                wheelFront.setAttribute('transform', `rotate(${angle}, 630, 320)`);
+            });
+
+            // Stance Suspension Height
+            stanceSlider.addEventListener('input', (e) => {
+                const val = e.target.value;
+                const offsetY = (val - 10) * 1.5;
+                stanceGroup.setAttribute('transform', `translate(0, ${offsetY})`);
+                stanceVal.innerText = val < 8 ? 'SLAMMED / AIR-RIDE' : val > 15 ? 'ELEVADO RALLY' : 'NORMAL';
+            });
+
+            // Exhaust Flames
+            exhaustCheck.addEventListener('change', (e) => {
+                exhaustFlame.style.opacity = e.target.checked ? '1' : '0';
+            });
+
+            // Rally Lights
+            rallyCheck.addEventListener('change', (e) => {
+                rallyPod.style.opacity = e.target.checked ? '1' : '0';
+            });
+
+            // Customizer Mode Tabs
+            document.querySelectorAll('.custom-tab-btn').forEach(tab => {
+                tab.addEventListener('click', () => {
+                    document.querySelectorAll('.custom-tab-btn').forEach(t => {
+                        t.classList.remove('active', 'bg-white/10', 'text-white', 'font-bold');
+                        t.classList.add('glass-panel', 'text-slate-400');
+                    });
+                    tab.classList.add('active', 'bg-white/10', 'text-white', 'font-bold');
+                    tab.classList.remove('glass-panel', 'text-slate-400');
+
+                    const mode = tab.dataset.mode;
+                    document.getElementById('panel-tuning').classList.toggle('hidden', mode !== 'tuning');
+                    document.getElementById('panel-rally').classList.toggle('hidden', mode !== 'rally');
+                    document.getElementById('panel-drag').classList.toggle('hidden', mode !== 'drag');
+
+                    supercharger.style.opacity = mode === 'drag' ? '1' : '0';
+                });
+            });
+
+            // Muscle Wheelie Button
+            document.getElementById('trigger-wheelie').addEventListener('click', () => {
+                stage.classList.add('wheelie-anim');
+                setTimeout(() => stage.classList.remove('wheelie-anim'), 1200);
+            });
+        };
+
+        /* =========================================================
+           4. TACHOMETER & SOUND ENGINE LOGIC
+           ========================================================= */
+        const initEngineSimulator = () => {
+            const pedalBtn = document.getElementById('pedal-btn');
+            const rpmCircle = document.getElementById('rpm-circle');
+            const rpmText = document.getElementById('rpm-text');
+            const turboVal = document.getElementById('turbo-val');
+            const speedVal = document.getElementById('speed-val');
+            const engineBay = document.getElementById('engine-bay');
+            const pedalStatus = document.getElementById('pedal-status');
+            const nosBtn = document.getElementById('nos-btn');
+            const shiftLights = document.querySelectorAll('#shift-lights div');
+
+            let isAccelerating = false;
+            let nosActive = false;
+            let currentRPM = 800;
+            const idleRPM = 800;
+            const maxRPM = 9200;
+
+            let audioCtx = null;
+            let osc = null;
+            let gainNode = null;
+
+            const startAudio = () => {
+                if (audioCtx) return;
+                try {
+                    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                    osc = audioCtx.createOscillator();
+                    gainNode = audioCtx.createGain();
+
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(40, audioCtx.currentTime);
+                    gainNode.gain.setValueAtTime(0.04, audioCtx.currentTime);
+
+                    osc.connect(gainNode);
+                    gainNode.connect(audioCtx.destination);
+                    osc.start();
+                } catch(e) {}
+            };
+
+            const updateSound = (rpm) => {
+                if (!audioCtx || !osc) return;
+                const freq = 35 + (rpm / maxRPM) * (nosActive ? 320 : 220);
+                osc.frequency.setTargetAtTime(freq, audioCtx.currentTime, 0.05);
+                gainNode.gain.setTargetAtTime(isAccelerating ? 0.25 : 0.04, audioCtx.currentTime, 0.05);
+            };
+
+            const engineLoop = () => {
+                const accelRate = nosActive ? 350 : 160;
+
+                if (isAccelerating) {
+                    currentRPM += Math.random() * accelRate + 100;
+                    if (currentRPM >= maxRPM) {
+                        currentRPM = maxRPM - (Math.random() * 300 + 150);
+                        engineBay.classList.add('engine-vibrating');
+                    }
+                } else {
+                    currentRPM -= 160;
+                    if (currentRPM < idleRPM) currentRPM = idleRPM;
+                    engineBay.classList.remove('engine-vibrating');
+                }
+
+                const rpmPercent = (currentRPM - idleRPM) / (maxRPM - idleRPM);
+                rpmCircle.style.strokeDashoffset = 377 - (377 * 0.75 * rpmPercent);
+                rpmText.innerText = Math.round(currentRPM);
+
+                // Update Shift Light LEDs
+                shiftLights.forEach((light, idx) => {
+                    const threshold = (idx + 1) * 0.18;
+                    if (rpmPercent > threshold) {
+                        light.className = idx >= 3 ? 'w-2.5 h-2.5 rounded-full bg-brand-red shadow-[0_0_8px_#FF003C]' : 'w-2.5 h-2.5 rounded-full bg-brand-neon shadow-[0_0_8px_#00F0FF]';
+                    } else {
+                        light.className = 'w-2.5 h-2.5 rounded-full bg-zinc-700';
+                    }
+                });
+
+                turboVal.innerText = `${(rpmPercent * (nosActive ? 2.5 : 1.6)).toFixed(1)} BAR`;
+                speedVal.innerText = `${Math.round(rpmPercent * 350)} KM/H`;
+
+                updateSound(currentRPM);
+                requestAnimationFrame(engineLoop);
+            };
+
+            const pressPedal = () => {
+                isAccelerating = true;
+                startAudio();
+                pedalStatus.classList.remove('bg-zinc-600');
+                pedalStatus.classList.add('bg-brand-red', 'shadow-[0_0_12px_#FF003C]');
+            };
+
+            const releasePedal = () => {
+                isAccelerating = false;
+                pedalStatus.classList.remove('bg-brand-red', 'shadow-[0_0_12px_#FF003C]');
+                pedalStatus.classList.add('bg-zinc-600');
+            };
+
+            pedalBtn.addEventListener('mousedown', pressPedal);
+            pedalBtn.addEventListener('mouseup', releasePedal);
+            pedalBtn.addEventListener('mouseleave', releasePedal);
+
+            nosBtn.addEventListener('click', () => {
+                nosActive = true;
+                nosBtn.classList.add('bg-brand-neon', 'text-black');
+                setTimeout(() => {
+                    nosActive = false;
+                    nosBtn.classList.remove('bg-brand-neon', 'text-black');
+                }, 2500);
+            });
+
+            engineLoop();
+        };
+
+        /* =========================================================
+           5. COMPARATOR LOGIC
+           ========================================================= */
+        const initComparator = () => {
+            const select1 = document.getElementById('select-car-1');
+            const select2 = document.getElementById('select-car-2');
+
+            supercars.forEach((car, idx) => {
+                select1.add(new Option(car.name, car.id, idx === 0));
+                select2.add(new Option(car.name, car.id, idx === 2));
+            });
+
+            const updateComparison = () => {
+                const car1 = supercars.find(c => c.id === select1.value);
+                const car2 = supercars.find(c => c.id === select2.value);
+
+                document.getElementById('car-1-card').innerHTML = `
+                    <div class="flex gap-4 items-center">
+                        <img src="${car1.image}" class="w-20 h-14 object-cover rounded-lg">
+                        <div>
+                            <h5 class="font-orbitron font-bold text-white text-sm">${car1.name}</h5>
+                            <p class="text-xs text-brand-red font-orbitron">${car1.power} | ${car1.type}</p>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('car-2-card').innerHTML = `
+                    <div class="flex gap-4 items-center">
+                        <img src="${car2.image}" class="w-20 h-14 object-cover rounded-lg">
+                        <div>
+                            <h5 class="font-orbitron font-bold text-white text-sm">${car2.name}</h5>
+                            <p class="text-xs text-brand-neon font-orbitron">${car2.power} | ${car2.type}</p>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('comp-name-1').innerText = car1.name;
+                document.getElementById('comp-val-1').innerText = car1.accel;
+                
+                document.getElementById('comp-name-2').innerText = car2.name;
+                document.getElementById('comp-val-2').innerText = car2.accel;
+
+                const bar1Width = Math.min(100, Math.max(15, (4.5 / car1.accelNum) * 55));
+                const bar2Width = Math.min(100, Math.max(15, (4.5 / car2.accelNum) * 55));
+
+                document.getElementById('bar-1').style.width = `${bar1Width}%`;
+                document.getElementById('bar-2').style.width = `${bar2Width}%`;
+            };
+
+            select1.addEventListener('change', updateComparison);
+            select2.addEventListener('change', updateComparison);
+            updateComparison();
+        };
+
+        /* =========================================================
+           6. MODAL SYSTEM
+           ========================================================= */
+        const modal = document.getElementById('car-modal');
+        const closeModalBtn = document.getElementById('close-modal');
+
+        const openModal = (carId) => {
+            const car = supercars.find(c => c.id === carId);
+            if (!car) return;
+
+            document.getElementById('modal-content').innerHTML = `
+                <div class="relative h-60 rounded-2xl overflow-hidden mb-6">
+                    <img src="${car.image}" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                    <div class="absolute bottom-4 left-4">
+                        <span class="bg-brand-red text-white text-[10px] font-orbitron font-bold px-3 py-1 rounded-full uppercase">${car.type}</span>
+                        <h3 class="font-orbitron text-2xl font-black text-white mt-1">${car.name}</h3>
+                    </div>
+                </div>
+
+                <p class="text-slate-300 text-xs sm:text-sm mb-6 leading-relaxed">${car.description}</p>
+
+                <div class="grid grid-cols-2 gap-3 font-orbitron">
+                    <div class="glass-panel p-3.5 rounded-xl">
+                        <p class="text-[10px] text-slate-500">MOTORIZACIÓN</p>
+                        <p class="text-xs font-bold text-white mt-1">${car.engine}</p>
+                    </div>
+                    <div class="glass-panel p-3.5 rounded-xl">
+                        <p class="text-[10px] text-slate-500">POTENCIA</p>
+                        <p class="text-xs font-bold text-brand-red mt-1">${car.power}</p>
+                    </div>
+                    <div class="glass-panel p-3.5 rounded-xl">
+                        <p class="text-[10px] text-slate-500">ACELERACIÓN 0-100</p>
+                        <p class="text-xs font-bold text-brand-neon mt-1">${car.accel}</p>
+                    </div>
+                    <div class="glass-panel p-3.5 rounded-xl">
+                        <p class="text-[10px] text-slate-500">VALOR ESTIMADO</p>
+                        <p class="text-xs font-bold text-brand-gold mt-1">${car.price}</p>
+                    </div>
+                </div>
+            `;
+
+            modal.classList.remove('opacity-0', 'pointer-events-none');
+            modal.firstElementChild.classList.remove('scale-95');
+        };
+
+        closeModalBtn.addEventListener('click', () => {
+            modal.classList.add('opacity-0', 'pointer-events-none');
+            modal.firstElementChild.classList.add('scale-95');
+        });
+
+        /* =========================================================
+           7. CATEGORY CARDS INTERACTION & REVEAL ON SCROLL
+           ========================================================= */
+        const initCategorySwitchers = () => {
+            document.querySelectorAll('.category-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const cat = card.dataset.category;
+                    const particleColor = card.dataset.particle;
+                    currentParticleColor = particleColor;
+
+                    // Update Active Pills
+                    document.querySelectorAll('.filter-pill').forEach(pill => {
+                        if (pill.dataset.filter === cat) {
+                            pill.classList.add('bg-brand-red', 'text-white');
+                            pill.classList.remove('glass-panel', 'text-slate-300');
+                        } else {
+                            pill.classList.remove('bg-brand-red', 'text-white');
+                            pill.classList.add('glass-panel', 'text-slate-300');
+                        }
+                    });
+
+                    renderShowroom(cat);
+                    document.getElementById('showroom').scrollIntoView({ behavior: 'smooth' });
+                });
+            });
+
+            // Filter Pills Listener
+            document.querySelectorAll('.filter-pill').forEach(pill => {
+                pill.addEventListener('click', () => {
+                    document.querySelectorAll('.filter-pill').forEach(p => {
+                        p.classList.remove('bg-brand-red', 'text-white');
+                        p.classList.add('glass-panel', 'text-slate-300');
+                    });
+                    pill.classList.add('bg-brand-red', 'text-white');
+                    pill.classList.remove('glass-panel', 'text-slate-300');
+
+                    renderShowroom(pill.dataset.filter);
+                });
+            });
+
+            // Reveal scroll animation
+            const reveals = document.querySelectorAll('.reveal');
+            const revealOnScroll = () => {
+                const windowHeight = window.innerHeight;
+                reveals.forEach(el => {
+                    if (el.getBoundingClientRect().top < windowHeight - 80) {
+                        el.classList.add('active');
+                    }
+                });
+            };
+
+            window.addEventListener('scroll', revealOnScroll);
+            revealOnScroll();
+        };
+
+        window.addEventListener('DOMContentLoaded', () => {
+            initHeroCanvas();
+            renderShowroom();
+            initCustomizer();
+            initEngineSimulator();
+            initComparator();
+            initCategorySwitchers();
+        });
+    </script>
+</body>
+</html>
