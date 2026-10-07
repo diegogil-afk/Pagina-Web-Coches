@@ -14,7 +14,7 @@
 
 ---
 
-## ✨ Características
+##  Características
 
 - **Hero animado** con partículas en `<canvas>` que cambian de color según la categoría elegida.
 - **5 categorías del motor**: Supercars, Rally WRC, Tuning & JDM, Muscle & Drag y Clásicos.
